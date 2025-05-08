@@ -6,6 +6,6 @@ The release section has MacOS images compressed with zstd, download the img.zst,
 ```
 wget https://github.com/FalsePhilosopher/MacOS-Recovery/releases/download/MacOS-15/MacOS-15-BaseSystem.img.zst
 unzstd -T0 MacOS-15-BaseSystem.img.zst
-dd if=MacOS-15-BaseSystem.img of=/dev/sdx #Replace sdx with the disk you want to write it to, run lsblk to find your disk name.
+sudo dd if=MacOS-15-BaseSystem.img of=/dev/sdx #Replace sdx with the disk you want to write it to, run lsblk to find your disk name.
 ```
 The images can also be used to create a MacOS VM, rename to BaseSystem.img and run [step 2](https://github.com/foxlet/macOS-Simple-KVM#step-2).
