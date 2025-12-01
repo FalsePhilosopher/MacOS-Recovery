@@ -21,6 +21,11 @@ on:
           - ISO
           - DMG
           - ZIP
+      create_release:
+        type: boolean
+        description: "Upload as a new Release?"
+        required: true
+        default: false
 
 run-name: Generate macOS Installer - ${{ github.event.inputs.macos_version }} ${{ github.event.inputs.file }}
 
@@ -86,3 +91,23 @@ jobs:
         with:
           name: macOS ${{ env.installer_name }}
           path: "~/Desktop/${{ env.installer_name }}.${{ github.event.inputs.file }}"
+
+      # Create GitHub Release
+      - name: Create GitHub Release
+        if: github.event.inputs.create_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: macOS-${{ env.installer_name }}-v${{ env.installer_version }}
+          name: macOS ${{ env.installer_name }} v${{ env.installer_version }} (${{ github.event.inputs.file }})
+          body: |
+            ## macOS ${{ env.installer_name }} Installer
+            
+            **Version:** ${{ env.installer_version }}
+            **Format:** ${{ github.event.inputs.file }}
+            
+            Generated automatically via GitHub Actions.
+          files: ~/Desktop/${{ env.installer_name }}.${{ env.file_type }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
