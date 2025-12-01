@@ -1,0 +1,21 @@
+name: List Available macOS Releases
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 2"
+
+jobs:
+  list-installers:
+    runs-on: macos-latest
+    outputs:
+      list: ${{ steps.list.outputs.stdout }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: List Installers
+        uses: mathiasvr/command-output@v2.0.0
+        id: list
+        with:
+          run: |
+            softwareupdate
+            softwareupdate --list-full-installers
